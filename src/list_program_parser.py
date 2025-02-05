@@ -1,23 +1,9 @@
 from pathlib import Path
 
 from common.constants import PARSER_TAGS
+from common.buffer import Buffer
 
-BUFFER_HANDLER_PARSER_FUNC = {}
-
-def set_buffer(name: str, value: any) -> None:
-    global BUFFER_HANDLER_PARSER_FUNC
-
-    BUFFER_HANDLER_PARSER_FUNC[name] = value
-
-def get_buffer(name: str) -> any:
-    global BUFFER_HANDLER_PARSER_FUNC
-
-    return BUFFER_HANDLER_PARSER_FUNC[name]
-
-def clear_buffer():
-    global BUFFER_HANDLER_PARSER_FUNC
-
-    BUFFER_HANDLER_PARSER_FUNC = {}
+buffer = Buffer()
 
 
 class ListProgramParser:
@@ -59,7 +45,7 @@ class ListProgramParser:
             tag: str | None = None
             tag_line_num: int = 0
 
-            set_buffer("parser_func_for_urls_tag", {})
+            buffer.set("parser_func_for_urls_tag", {})
 
             for num, line in enumerate(list_program_file_lines):
                 line = line.strip("\n")
@@ -92,7 +78,7 @@ class ListProgramParser:
                     data = self.__handler_parser_func(line, tag, data)
                     print(data)
 
-            clear_buffer()
+            buffer.clear()
 
             return self.__compiling_parser_data_into_list(parser_data=data)
 
@@ -142,12 +128,12 @@ class ListProgramParser:
 
     @staticmethod
     def _parser_func_for_urls_tag(line: str) -> dict[str, str]:
-        buffer: dict = get_buffer("parser_func_for_urls_tag")
+        buffer_parser_func_for_urls_tag: dict = buffer.get("parser_func_for_urls_tag")
 
         line = line.strip(" ")
         name_program, url_program = line.split(":")
         url_program = url_program.strip(" ")
 
-        buffer[name_program] = url_program
+        buffer_parser_func_for_urls_tag[name_program] = url_program
 
-        return buffer
+        return buffer_parser_func_for_urls_tag

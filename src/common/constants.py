@@ -8,8 +8,6 @@ PATH_LIST_PROGRAM = os.path.join(CRID, 'list_programs.cfg')
 PARSER_TAGS = [
     "priority-da",
     "priority-da\\",
-    "head",
-    "head\\",
     "urls",
     "urls\\",
 ]
